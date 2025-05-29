@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Code Viewer</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      height: 100%;
+      background: url('bg.jpg') no-repeat center center/cover fixed;
+      font-family: 'Segoe UI', sans-serif;
+      color: white;
+    }
+
+    .main-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 60px 20px;
+      min-height: 100vh;
+    }
+
+    .code-card {
+      width: 90%;
+      max-width: 1000px;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 20px;
+      padding: 30px;
+      position: relative;
+      overflow-x: auto;
+      white-space: pre;
+      font-family: 'Courier New', monospace;
+      font-size: 1em;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+      margin-bottom: 30px;
+    }
+
+    .copy-btn {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background-color: #ffffff33;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      backdrop-filter: blur(6px);
+      transition: background 0.3s ease;
+    }
+
+    .copy-btn:hover {
+      background-color: #ffffff55;
+    }
+
+    .copied-msg {
+      position: absolute;
+      top: 50px;
+      right: 15px;
+      font-size: 0.9em;
+      color: lightgreen;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="main-container" id="main-container">
+    Loading code from Google Sheets...
+  </div>
+
+  <script>
+    async function loadAllCodes() {
+      const url = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vShY8MPTzsEITuBneTPyNF39ptRuhmI6xz2qNSYd9WsnVgo232TcYnaVbvrqRwI4bsykngux8YUzQlA/pub?output=csv';
+      try {
+        const res = await fetch(url);
+        const text = await res.text();
+        const rows = text.split('\n');
+        const firstRow = rows[1] || rows[0];
+        const columns = firstRow.split(',');
+        const container = document.getElementById('main-container');
+        container.innerHTML = '';
+
+        columns.forEach((raw, i) => {
+          let codeText = raw;
+
+          if (codeText.startsWith('"') && codeText.endsWith('"')) {
+            codeText = codeText.slice(1, -1);
+          }
+
+          codeText = codeText.replace(/""/g, '"');
+          codeText = codeText.trim();
+
+          if (codeText.length > 0) {
+            const card = document.createElement('div');
+            card.className = 'code-card';
+            card.innerHTML = `
+              <span class="code-text">${codeText.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</span>
+              <button class="copy-btn" onclick="copyCode(this)">📋 Copy</button>
+              <span class="copied-msg">✅ Copied to clipboard!</span>
+            `;
+            container.appendChild(card);
+          }
+        });
+      } catch (err) {
+        console.error("Error fetching CSV:", err);
+        document.getElementById('main-container').innerHTML = '⚠️ Failed to load code!';
+      }
+    }
+
+    function copyCode(btn) {
+      const card = btn.parentElement;
+      const codeText = card.querySelector('.code-text').textContent;
+      navigator.clipboard.writeText(codeText);
+      const msg = card.querySelector('.copied-msg');
+      msg.style.display = 'inline';
+      setTimeout(() => msg.style.display = 'none', 2000);
+    }
+
+    loadAllCodes();
+  </script>
+</body>
+</html>

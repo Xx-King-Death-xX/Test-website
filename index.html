@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Download Cards</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      height: 100%;
+      background: url('bg.jpg') no-repeat center center/cover;
+      background-attachment: fixed; /* 🌌 This keeps the bg stuck in place */
+      font-family: 'Segoe UI', sans-serif;
+      color: white;
+    }
+
+    .main-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 60px 20px;
+    }
+
+    h1 {
+      font-size: 3em;
+      margin-bottom: 40px;
+      text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.6);
+    }
+
+    .card-container {
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+    }
+
+    .card {
+      width: 500px;
+      height: 200px;
+      border-radius: 25px;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: white;
+      font-size: 1.2em;
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      text-align: center;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .card:hover {
+      transform: scale(1.03);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+    }
+
+    .download-btn {
+      margin-top: 10px;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 12px;
+      background-color: #ffffff33;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      backdrop-filter: blur(6px);
+      transition: background 0.3s ease;
+    }
+
+    .download-btn:hover {
+      background-color: #ffffff55;
+    }
+  </style>
+</head>
+<body>
+  <div class="main-container">
+    <h1>📁 My Download Cards</h1>
+    <div class="card-container">
+      <div class="card">
+        <div>Download cool stuff here 🛠️</div>
+        <a href="WDYM16x-Bloxdport.zip" download>
+          <button class="download-btn">⬇️ Download Folder</button>
+        </a>
+      </div>
+      <div class="card">
+        <div>Wanna grab this pack? 🎮</div>
+        <a href="crosea-32x.zip" download>
+          <button class="download-btn">⬇️ Download Assets</button>
+        </a>
+      </div>
+      <div class="card">
+      <div>Check out all the codes 📜</div>
+      <a href="code-viewer.html">
+        <button class="download-btn">🔍 View Codes</button>
+      </a>
+    </div>
+    </div>
+  </div>
+</body>
+</html>
